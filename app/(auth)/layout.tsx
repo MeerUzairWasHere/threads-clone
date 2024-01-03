@@ -16,7 +16,6 @@ export default function RootLayout({children}:{children:React.ReactNode}){
         <body className={`${inter.className} bg-dark-1`}>
             {children}
         </body>
-
     </html>
 </ClerkProvider>
     )
