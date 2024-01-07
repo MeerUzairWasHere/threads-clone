@@ -28,3 +28,29 @@ export async function createThread({ text, author, communityId, path }: Params) 
         throw new Error(`Failed to create thread: ${error.message}`)
     }
 }
+
+export async function fetchPosts(pageNumber = 1, pageSize = 20) {
+    try {
+        connectToBD()
+        const skip = (pageNumber - 1) * pageSize
+        const postsQuery = Thread.find(
+            { parentId: { $in: [null, undefined] } }).sort(
+                { createdAt: "desc" }).skip(skip).limit(pageSize).populate({ path: "author", model: User }).populate({
+                    path: "children", populate: {
+                        path: "author",
+                        model: User,
+                        select: "_id name parentId image"
+                    }
+                })
+        const totalPostCount = await Thread.countDocuments({ parentId: { $in: [null, undefined] } })
+
+        const posts = await postsQuery.exec()
+        const isNext = totalPostCount > skip + posts.length
+
+        return { posts, isNext }
+    } catch (error: any) {
+        throw new Error(`Failed to fetch Posts: ${error.message}`)
+
+
+    }
+}
