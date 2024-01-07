@@ -35,6 +35,10 @@ interface Props {
 }
 
 const AccountProfile = ({ user, btnTitle }: Props) => {
+  const [files, setFiles] = useState<File[]>([]);
+  const { startUpload } = useUploadThing("media");
+  const router = useRouter();
+  const pathname = usePathname();
   const form = useForm({
     resolver: zodResolver(UserValidation),
     defaultValues: {
@@ -45,10 +49,6 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
     },
   });
 
-  const [files, setFiles] = useState<File[]>([]);
-  const { startUpload } = useUploadThing("media");
-  const router = useRouter();
-  const pathname = usePathname();
   const onSubmit = async (values: z.infer<typeof UserValidation>) => {
     const blob = values.profile_photo;
     const hasImageChanged = isBase64Image(blob);
@@ -72,6 +72,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       router.push("/");
     }
   };
+
   const handleImage = (
     e: ChangeEvent<HTMLInputElement>,
     fieldChange: (value: string) => void
@@ -91,7 +92,9 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
       fr.readAsDataURL(file);
     }
   };
+  
   return (
+
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
@@ -130,6 +133,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                   onChange={(e) => handleImage(e, field.onChange)}
                 />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -149,6 +153,7 @@ const AccountProfile = ({ user, btnTitle }: Props) => {
                 />
               </FormControl>
               <FormMessage />
+ 
             </FormItem>
           )}
         />
