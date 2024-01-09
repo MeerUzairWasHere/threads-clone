@@ -37,7 +37,10 @@ const ThreadCard = ({
   isComment,
 }: Props) => {
   return (
-    <article className="flex w-full  flex-col  rounded-xl bg-dark-2 p-7">
+    <article
+      className={`flex w-full  flex-col  rounded-xl  ${
+        isComment ? "px-0 xs:px-7" : " bg-dark-2 p-7"
+      } `}>
       <div className="flex items-start justify-between">
         <div className="flex w-full flex-row  flex-1 gap-4">
           <div className="flex  flex-col items-center">
@@ -45,11 +48,11 @@ const ThreadCard = ({
               href={`/profile/${author.id}`}
               className=" relative h-11 w-11">
               <Image
-                src={author.image || ""}
+                src={author.image.toString()} 
                 alt="Profile Image"
-                fill
-                className=" cursor-pointer rounded-full"
-              />
+                width={48}
+                height={48}
+                className=" cursor-pointer rounded-full"></Image>
             </Link>
             <div className="thread-card_bar"></div>
           </div>
