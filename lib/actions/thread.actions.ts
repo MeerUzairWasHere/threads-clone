@@ -2,7 +2,7 @@
 import { revalidatePath } from "next/cache";
 import Thread from "../models/thread.model";
 import User from "../models/user.model";
-import { connectToBD } from "../mongoose"
+import { connectToDB } from "../mongoose"
 interface Params {
     text: string,
     author: string,
@@ -10,8 +10,8 @@ interface Params {
     path: string
 }
 export async function createThread({ text, author, communityId, path }: Params) {
-    connectToBD();
     try {
+        connectToDB();
         const createdThread = await Thread.create({
             text,
             author,
@@ -30,8 +30,8 @@ export async function createThread({ text, author, communityId, path }: Params) 
 }
 
 export async function fetchPosts(pageNumber = 1, pageSize = 20) {
-    connectToBD()
     try {
+        connectToDB()
         const skip = (pageNumber - 1) * pageSize
         const postsQuery = Thread.find(
             { parentId: { $in: [null, undefined] } }).sort(
@@ -56,8 +56,8 @@ export async function fetchPosts(pageNumber = 1, pageSize = 20) {
 }
 
 export async function fetchThreadById(id: String) {
-    connectToBD()
     try {
+        connectToDB()
         //TODO:  Populate community
         const thread = await Thread.findById(id).populate({ path: "author", model: User, select: "_id id name image" }).populate({
             path: "children",
@@ -88,8 +88,8 @@ export async function addCommentToThread(
     commentText: string,
     userId: string,
     path: string) {
-    connectToBD();
     try {
+        connectToDB();
         const originalThread = await Thread.findById(threadId)
         if (!originalThread) {
             throw new Error("Thread not found!")

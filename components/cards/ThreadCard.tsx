@@ -48,7 +48,7 @@ const ThreadCard = ({
               href={`/profile/${author.id}`}
               className=" relative h-11 w-11">
               <Image
-                src={author.image.toString()} 
+                src={author?.image?.toString()}
                 alt="Profile Image"
                 width={48}
                 height={48}
