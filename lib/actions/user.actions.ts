@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import User from "../models/user.model";
 import { connectToDB } from "../mongoose";
 import { FilterQuery, SortOrder } from "mongoose";
+import mongoose from 'mongoose'
 
 interface Params {
     userId: string,
@@ -62,18 +63,13 @@ export async function fetchUserPosts(userId: string) {
             path: "threads",
             model: Thread,
             populate: [
-                // {
-                //     path: "community",
-                //     model: Community,
-                //     select: "name id image _id", // Select the "name" and "_id" fields from the "Community" model
-                // },
                 {
                     path: "children",
                     model: Thread,
                     populate: {
                         path: "author",
                         model: User,
-                        select: "name image id", // Select the "name" and "_id" fields from the "User" model
+                        select: "name image id", // Select the "name" and "_id" fields from the "User"  
                     },
                 },
             ],
@@ -84,6 +80,38 @@ export async function fetchUserPosts(userId: string) {
         throw error;
     }
 }
+
+export async function fetchUserReplies(userId: string) {
+    try {
+        connectToDB();
+
+
+        // Find the user by userId
+        const user = await User.findOne({ id: userId })
+
+        if (!user) {
+            // Handle the case where the user is not found
+            console.error("User not found");
+            return null;
+        }
+
+        // Find all threads authored by the user with the given userId
+        const replies = await Thread.find({
+            author: user,
+            parentId: { $exists: true }, // Assuming you have a field like parentId for replies
+        }).populate({
+            path: "author",
+            model: User,
+            select: "name image id",
+        });
+
+        return replies;
+    } catch (error) {
+        console.error("Error fetching user replies:", error);
+        throw error;
+    }
+}
+
 
 export async function fetchUsers(
     { userId,

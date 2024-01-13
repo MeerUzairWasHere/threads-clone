@@ -20,9 +20,9 @@ import { addCommentToThread } from "@/lib/actions/thread.actions";
 // import { createThread } from "@/lib/actions/thread.actions";
 
 interface Props {
-  threadId: String;
-  currentUserImage: String;
-  currentUserId: String;
+  threadId: string;
+  currentUserImage: string;
+  currentUserId: string;
 }
 const Comment = ({ threadId, currentUserImage, currentUserId }: Props) => {
   const router = useRouter();
