@@ -45,9 +45,15 @@ The Threads Clone is a visually stunning full-stack web application crafted with
 
 ## Built With
 
-Major Frameworks Used:
 
 * [Next.js 14](https://nextjs.org/)
+* [MongoDB](https://www.mongodb.com/)
+* [Shadcn UI](https://ui.shadcn.com/)
+* [TailwindCSS](https://tailwindcss.com/)
+* [Clerk](https://clerk.dev/)
+* [React Hook Form](https://react-hook-form.com/)
+* [Zod](https://github.com/colinhacks/zod)
+* [TypeScript](https://www.typescriptlang.org/)
 
 ## Getting Started
 
